@@ -1,9 +1,5 @@
 @extends("layouts.app")
 @section("content")
-    <button class="bg-green-300 hover:bg-green-400 text-black font-bold py-2 px-4 rounded">
-        <a href="{{route('product.create')}}">create product</a>
-    </button>
-    @include("partials.message")
     @if($products)
         <h1>Products</h1>
         <table>

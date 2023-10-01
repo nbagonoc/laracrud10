@@ -1,10 +1,6 @@
 @extends("layouts.app")
 @section("content")
     <h1>Create</h1>
-    <button>
-        <a href="{{route('product.index')}}">home</a>
-    </button>
-        @include("partials.message")
     <form action="{{route('product.save')}}" method="post">
         @csrf
         @method('post')
@@ -24,6 +20,6 @@
             <label for="description">Description</label>
             <input name="description" type="text" placeholder="description">
         </div>
-        <input type="submit" value="Save a new product">
+        <input type="submit" value="Save a new product" class="bg-green-300 hover:bg-green-400 text-black font-bold py-2 px-4 rounded"">
     </form>
 @endsection

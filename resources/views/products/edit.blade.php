@@ -1,10 +1,6 @@
 @extends("layouts.app")
 @section("content")
     <h1>Edit</h1>
-    <button>
-        <a href="{{route('product.index')}}">home</a>
-    </button>
-    @include("partials.message")
     <form action="{{route('product.update',$product)}}" method="post">
         @csrf
         @method('put')
