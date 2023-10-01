@@ -1,6 +1,6 @@
 @extends("layouts.app")
 @section("content")
-    <h1>Edit</h1>
+    <h1 class="text-3xl mb-2 border-b">Edit</h1>
     <form action="{{route('product.update',$product)}}" method="post">
         @csrf
         @method('put')
