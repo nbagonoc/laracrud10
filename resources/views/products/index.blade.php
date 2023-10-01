@@ -34,16 +34,16 @@
                         <td>{{$product->description}}</td>
                         <td>
                             <button>
-                                <a href="{{route('product.read', ['id' => $product->id])}}">View</a>
+                                <a href="{{route('product.read', $product)}}">View</a>
                             </button>
                         </td>
                         <td>
                             <button>
-                                <a href="{{route('product.edit', ['id' => $product->id])}}">Edit</a>
+                                <a href="{{route('product.edit', $product)}}">Edit</a>
                             </button>
                         </td>
                         <td>
-                            <form action="{{route('product.delete', ['id' => $product->id])}}" method="post">
+                            <form action="{{route('product.delete', $product)}}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button type="submit">Delete</button>

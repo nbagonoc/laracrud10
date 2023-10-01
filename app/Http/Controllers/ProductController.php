@@ -9,6 +9,7 @@ class ProductController extends Controller
 {
     public function index() {
         $products = Product::all();
+
         return view('products.index',['products' => $products]);
     }
 
@@ -25,21 +26,20 @@ class ProductController extends Controller
         ]);
 
         Product::create($data);
+
         return redirect(route('product.index'));
 
     }
 
-    public function read($id) {
-        $product = Product::findOrFail($id);
+    public function read(Product $product) {
         return view('products.read', ['product' => $product]);
     }
 
-    public function edit($id) {
-        $product = Product::findOrFail($id);
+    public function edit(Product $product) {
         return view('products.edit', ['product' => $product]);
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, Product $product) {
         $data = $request->validate([
             'name' => 'required',
             'qty' => 'required|numeric',
@@ -47,14 +47,14 @@ class ProductController extends Controller
             'description' => 'required',
         ]);
 
-        $product = Product::findOrFail($id);
         $product->update($data);
+
         return redirect(route('product.index'))->with('success','Product successfully update');
     }
 
-    public function delete($id) {
-        $product = Product::findOrFail($id);
+    public function delete(Product $product) {
         $product->delete();
+        
         return redirect(route('product.index'))->with('success','Product successfully deleted');
     }
 }
