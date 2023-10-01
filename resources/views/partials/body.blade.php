@@ -1,4 +1,4 @@
 <body>
-    <div class="container my-3">
+    <div class="container mx-auto">
         @yield("content")
     </div>

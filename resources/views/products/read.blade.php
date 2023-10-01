@@ -1,6 +1,5 @@
 @extends("layouts.app")
 @section("content")
-<div>
     <h1>Edit</h1>
     <button>
         <a href="{{route('product.index')}}">home</a>
@@ -9,5 +8,4 @@
     <p>{{$product->qty}}</p>
     <p>{{$product->price}}</p>
     <p>{{$product->description}}</p>
-</div>
 @endsection

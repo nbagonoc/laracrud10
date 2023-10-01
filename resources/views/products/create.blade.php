@@ -1,6 +1,5 @@
 @extends("layouts.app")
 @section("content")
-<div>
     <h1>Create</h1>
     <button>
         <a href="{{route('product.index')}}">home</a>
@@ -27,5 +26,4 @@
         </div>
         <input type="submit" value="Save a new product">
     </form>
-</div>
 @endsection
