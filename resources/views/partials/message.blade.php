@@ -2,14 +2,14 @@
     @if($errors->any())
         @foreach($errors->all() as $error)
             <div class="error-message">
-                <p>{{$error}}</p>
+                <p class="text-red-500">{{$error}}</p>
             </div>
         @endforeach
     @endif
 
     @if(session()->has('success'))
         <div class="success-message">
-            <p>{{session('success')}}</p>
+            <p class="text-green-600">{{session('success')}}</p>
         </div>
     @endif
 </div>
