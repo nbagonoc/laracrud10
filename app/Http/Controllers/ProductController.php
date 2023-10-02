@@ -18,10 +18,10 @@ class ProductController extends Controller
     
     public function save(Request $request) {
         $data = $request->validate([
-            'name' => 'required',
-            'qty' => 'required|numeric',
-            'price' => 'required|decimal:0,2',
-            'description' => 'required',
+            'name'          => 'required',
+            'qty'           => 'required|numeric',
+            'price'         => 'required|decimal:0,2',
+            'description'   => 'required',
         ]);
 
         Product::create($data);
@@ -39,10 +39,10 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product) {
         $data = $request->validate([
-            'name' => 'required',
-            'qty' => 'required|numeric',
-            'price' => 'required|decimal:0,2',
-            'description' => 'required',
+            'name'          => 'required',
+            'qty'           => 'required|numeric',
+            'price'         => 'required|decimal:0,2',
+            'description'   => 'required',
         ]);
 
         $product->update($data);
