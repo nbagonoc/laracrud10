@@ -26,8 +26,7 @@ class ProductController extends Controller
 
         Product::create($data);
 
-        return redirect(route('product.index'));
-
+        return redirect(route('product.index'))->with('success','Product successfully saved');
     }
 
     public function read(Product $product) {
