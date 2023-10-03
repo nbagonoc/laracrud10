@@ -2,71 +2,152 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Http\Controllers\ProductController;
-use App\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
 use Mockery;
+use Tests\TestCase;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use App\Http\Controllers\ProductController;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductControllerTest extends TestCase
 {
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        Mockery::close();
-    }
+    use RefreshDatabase;
 
     public function testIndex()
     {
-        // Create a mock of the Product model to simulate database behavior
+        // Arrange
         $productMock = Mockery::mock(Product::class);
-        $productMock->shouldReceive('all')->andReturn(new Collection()); // Mock the all method to return an empty collection
-
-        // Create an instance of the ProductController and inject the mock
+        $productMock->shouldReceive('all')->andReturn(new Collection());
         $controller = new ProductController($productMock);
-
-        // Call the method under test
+        // Act
         $response = $controller->index();
-
-        // Assertions
+        // Assert
         $this->assertEquals('products.index', $response->name()); // Assert the view name
         $this->assertInstanceOf(Collection::class, $response->getData()['products']); // Assert that 'products' is an instance of Collection
     }
 
     public function testCreate()
     {
-        // Create an instance of the ProductController and inject the mock
+        // Arrange
         $controller = new ProductController();
-
-        // Call the method under test
+        // Act
         $response = $controller->create();
+        // Assert
+        $this->assertEquals('products.create', $response->name());
+    }
 
-        // Assertions
-        $this->assertEquals('products.create', $response->name()); // Assert the view name
+    public function testSave()
+    {
+        // Arrange
+        $request = new Request([
+            'name' => 'Test Product',
+            'qty' => 10,
+            'price' => 9.99,
+            'description' => 'This is a test product'
+        ]);
+        $controller = new ProductController();
+        // Act
+        $response = $controller->save($request);
+        // Assert
+        $this->assertDatabaseHas('products', [
+            'name' => 'Test Product',
+            'qty' => 10,
+            'price' => 9.99,
+            'description' => 'This is a test product'
+        ]);
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals(route('product.index'), $response->getTargetUrl());
+        $this->assertEquals('Product successfully saved', session('success'));
     }
 
     public function testRead()
     {
-        $productMock = Mockery::mock(Product::class);
+        // Arrange
         $product = new Product([
-            'name' => 'Test Product',
-            'qty' => 10, // Replace with your desired quantity
-            'price' => 19.99, // Replace with your desired price
-            'description' => 'This is a test product description.'
+            "id" => 1,
+            "name" => "test product",
+            "qty" => 10,
+            "price" => 19.99,
+            "description" => "This is a test product description.",
+            "created_at" => "2023-10-02 11:21:37",
+            "updated_at" => "2023-10-02 11:21:37"
         ]);
-        $productMock->shouldReceive('findOrFail')->with(1)->andReturn($product); // Mock the 'findOrFail' method
-
-        // Create an instance of the ProductController and inject the mock
-        $controller = new ProductController($productMock);
-
-        // Call the method under test
+        $controller = new ProductController();
+        // Act
         $response = $controller->read($product);
-
-        // Assertions
-        $this->assertEquals('products.read', $response->name()); // Assert the view name
+        // Assert
+        $this->assertEquals('products.read', $response->name());
         $this->assertEquals($product, $response->getData()['product']);
     }
 
-    // public function test
+    public function testEdit()
+    {
+        // Arrange
+        $product = new Product([
+            "id" => 1,
+            "name" => "test product",
+            "qty" => 10,
+            "price" => 19.99,
+            "description" => "This is a test product description.",
+            "created_at" => "2023-10-02 11:21:37",
+            "updated_at" => "2023-10-02 11:21:37"
+        ]);
+        $controller = new ProductController();
+        // Act
+        $response = $controller->edit($product);
+        // Assert
+        $this->assertEquals('products.edit', $response->name());
+        $this->assertEquals($product, $response->getData()['product']);
+    }
+
+    public function testUpdate(){
+        // Arrange
+        $product = Product::factory()->create([
+            'name' => 'Test Product',
+            'qty' => 10,
+            'price' => 9.99,
+            'description' => 'This is a test product',
+        ]);
+        $request = new Request([
+            'name' => 'Updated Product',
+            'qty' => 20,
+            'price' => 19.99,
+            'description' => 'This is an updated product',
+        ]);
+        $controller = new ProductController();
+        // Act
+        $response = $controller->update($request, $product);
+        // Assert
+        $this->assertDatabaseHas('products', [
+            'name' => 'Updated Product',
+            'qty' => 20,
+            'price' => 19.99,
+            'description' => 'This is an updated product',
+        ]);
+        $this->assertEquals(route('product.index'), $response->getTargetUrl());
+        $this->assertEquals('Product successfully update', session('success'));
+    }
+
+    public function testDelete()
+    {
+        // Arrange
+        $product = new Product([
+            "id" => 1,
+            "name" => "test product",
+            "qty" => 10,
+            "price" => 19.99,
+            "description" => "This is a test product description.",
+            "created_at" => "2023-10-02 11:21:37",
+            "updated_at" => "2023-10-02 11:21:37"
+        ]);
+        // Act
+        $controller = new ProductController();
+        $response = $controller->delete($product);
+        // Assert
+        $this->assertTrue($response->isRedirect());
+        $this->assertEquals(route('product.index'), $response->getTargetUrl());
+        $this->assertEquals('Product successfully deleted', session('success'));
+    }
 
 }
