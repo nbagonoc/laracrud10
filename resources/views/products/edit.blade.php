@@ -20,6 +20,8 @@
             <label for="description">Description</label>
             <input name="description" type="text" placeholder="description" value="{{$product->description}}" class="border rounded p-3 py-1">
         </div>
-        <input type="submit" value="Update Product" class="bg-green-300 hover:bg-green-400 text-black font-bold py-2 px-4 rounded mt-2">
+        <x-button-success>Save</x-button-success>
+        <x-button href="{{route('product.index')}}">Cancel</x-button>
     </form>
+
 @endsection
