@@ -2,13 +2,11 @@
 
 namespace Tests\Unit;
 
-use Mockery;
-use Tests\TestCase;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Http\Controllers\ProductController;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
 {
@@ -17,14 +15,17 @@ class ProductControllerTest extends TestCase
     public function testIndex()
     {
         // Arrange
-        $productMock = Mockery::mock(Product::class);
-        $productMock->shouldReceive('all')->andReturn(new Collection());
-        $controller = new ProductController($productMock);
+        $product1 = Product::factory()->create();
+        $product2 = Product::factory()->create();
+        $controller = new ProductController();
         // Act
         $response = $controller->index();
         // Assert
-        $this->assertEquals('products.index', $response->name()); // Assert the view name
-        $this->assertInstanceOf(Collection::class, $response->getData()['products']); // Assert that 'products' is an instance of Collection
+        $this->assertInstanceOf(\Illuminate\View\View::class, $response);
+        $this->assertEquals('products.index', $response->name());
+        $this->assertArrayHasKey('products', $response->getData());
+        $this->assertTrue($response->getData()['products']->contains($product1));
+        $this->assertTrue($response->getData()['products']->contains($product2));
     }
 
     public function testCreate()
@@ -73,6 +74,7 @@ class ProductControllerTest extends TestCase
             "created_at" => "2023-10-02 11:21:37",
             "updated_at" => "2023-10-02 11:21:37"
         ]);
+        // $product = Product::factory()->create(); //works as well
         $controller = new ProductController();
         // Act
         $response = $controller->read($product);
@@ -93,6 +95,7 @@ class ProductControllerTest extends TestCase
             "created_at" => "2023-10-02 11:21:37",
             "updated_at" => "2023-10-02 11:21:37"
         ]);
+        // $product = Product::factory()->create(); //works as well
         $controller = new ProductController();
         // Act
         $response = $controller->edit($product);
@@ -104,11 +107,15 @@ class ProductControllerTest extends TestCase
     public function testUpdate(){
         // Arrange
         $product = Product::factory()->create([
-            'name' => 'Test Product',
-            'qty' => 10,
-            'price' => 9.99,
-            'description' => 'This is a test product',
+            "id" => 1,
+            "name" => "Test Product",
+            "qty" => 10,
+            "price" => 19.99,
+            "description" => "This is a test product description.",
+            "created_at" => "2023-10-02 11:21:37",
+            "updated_at" => "2023-10-02 11:21:37"
         ]);
+        // $product = Product::factory()->create(); //works as well
         $request = new Request([
             'name' => 'Updated Product',
             'qty' => 20,
@@ -141,6 +148,7 @@ class ProductControllerTest extends TestCase
             "created_at" => "2023-10-02 11:21:37",
             "updated_at" => "2023-10-02 11:21:37"
         ]);
+        // $product = Product::factory()->create(); //works as well
         // Act
         $controller = new ProductController();
         $response = $controller->delete($product);
