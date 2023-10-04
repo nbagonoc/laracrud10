@@ -38,7 +38,7 @@ class ProductControllerTest extends TestCase
         $this->assertEquals('products.create', $response->name());
     }
 
-    public function testSave()
+    public function testStore()
     {
         // Arrange
         $request = new Request([
@@ -49,7 +49,7 @@ class ProductControllerTest extends TestCase
         ]);
         $controller = new ProductController();
         // Act
-        $response = $controller->save($request);
+        $response = $controller->store($request);
         // Assert
         $this->assertDatabaseHas('products', [
             'name' => 'Test Product',
