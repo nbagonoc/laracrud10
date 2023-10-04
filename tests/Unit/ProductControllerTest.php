@@ -62,7 +62,7 @@ class ProductControllerTest extends TestCase
         $this->assertEquals('Product successfully saved', session('success'));
     }
 
-    public function testRead()
+    public function testShow()
     {
         // Arrange
         $product = new Product([
@@ -77,9 +77,9 @@ class ProductControllerTest extends TestCase
         // $product = Product::factory()->create(); //works as well
         $controller = new ProductController();
         // Act
-        $response = $controller->read($product);
+        $response = $controller->show($product);
         // Assert
-        $this->assertEquals('products.read', $response->name());
+        $this->assertEquals('products.show', $response->name());
         $this->assertEquals($product, $response->getData()['product']);
     }
 
@@ -136,7 +136,7 @@ class ProductControllerTest extends TestCase
         $this->assertEquals('Product successfully update', session('success'));
     }
 
-    public function testDelete()
+    public function testDestroy()
     {
         // Arrange
         $product = new Product([
@@ -151,7 +151,7 @@ class ProductControllerTest extends TestCase
         // $product = Product::factory()->create(); //works as well
         // Act
         $controller = new ProductController();
-        $response = $controller->delete($product);
+        $response = $controller->destroy($product);
         // Assert
         $this->assertTrue($response->isRedirect());
         $this->assertEquals(route('product.index'), $response->getTargetUrl());

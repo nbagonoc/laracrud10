@@ -22,9 +22,9 @@
                     <td class="py-5">{{$product->price}}</td>
                     <td class="py-5">{{$product->description}}</td>
                     <td class="py-5">
-                        <x-button href="{{route('product.read', $product)}}">View</x-button>
+                        <x-button href="{{route('product.show', $product)}}">View</x-button>
                         <x-button href="{{route('product.edit', $product)}}">Edit</x-button>
-                        <form action="{{route('product.delete', $product)}}" method="post" class="inline">
+                        <form action="{{route('product.destroy', $product)}}" method="post" class="inline">
                             @csrf
                             @method('delete')
                             <x-button-danger>Delete</x-button-danger>

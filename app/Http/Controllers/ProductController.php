@@ -16,7 +16,7 @@ class ProductController extends Controller
         return view('products.create');
     }
     
-    public function save(Request $request) {
+    public function store(Request $request) {
         $data = $request->validate([
             'name'          => 'required',
             'qty'           => 'required|numeric',
@@ -29,8 +29,8 @@ class ProductController extends Controller
         return redirect(route('product.index'))->with('success','Product successfully saved');
     }
 
-    public function read(Product $product) {
-        return view('products.read', ['product' => $product]);
+    public function show(Product $product) {
+        return view('products.show', ['product' => $product]);
     }
 
     public function edit(Product $product) {
@@ -50,7 +50,7 @@ class ProductController extends Controller
         return redirect(route('product.index'))->with('success','Product successfully update');
     }
 
-    public function delete(Product $product) {
+    public function destroy(Product $product) {
         $product->delete();
         
         return redirect(route('product.index'))->with('success','Product successfully deleted');

@@ -1,7 +1,7 @@
 @extends("layouts.app")
 @section("content")
     <h1 class="text-3xl mb-5 border-b">Create</h1>
-    <form action="{{route('product.save')}}" method="post">
+    <form action="{{route('product.store')}}" method="post">
         @csrf
         @method('post')
         <div class="my-1">
