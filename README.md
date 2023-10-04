@@ -1,10 +1,6 @@
 ## About LaraCrud10
 
-Just a simple Laravel CRUD app with complete unit test.
-
- 
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+A simple Laravel10 CRUD app with CRUD unit test.
 
 ## How to run locally:
 
